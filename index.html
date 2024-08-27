@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <style>
+      iframe {
+        width: 90%;
+        height: 90%;
+      }
+      #framecontainer {
+        width: 90vw;
+        height: 90vh;
+        place-content: center;
+      }
+    </style>
+    <p>This is a demo for scroll-start-target.</p>
+    <p id="notice"></p>
+    <div id="framecontainer">
+      <div>
+        <button onclick="Refresh()">Refresh</button>
+        Pick the row number.
+        <input id="rownum" type="number" min="1" max="5" value="1" placeholder="1-5" >
+        Pick the column number.
+        <input id="colnum" type="number" min="1" max="5" value="1" placeholder="1-5" >
+        <h4 id="status">Selected row and col are 1,1</h4>
+      </div>
+      <iframe id="frame" src="frame.html?r=1&c=1"></iframe>
+    </div>
+    <script>
+      const framecontainer = document.getElementById("framecontainer");
+      const rownum = document.getElementById("rownum");
+      const colnum = document.getElementById("colnum");
+      const status = document.getElementById("status");
+
+      function Refresh() {
+        let frame = document.getElementById("frame");
+        frame.remove();
+        frame = document.createElement("iframe");
+        frame.id = "frame";
+
+        const r = rownum.value;
+        const c = colnum.value;
+        frame.src = `frame.html?r=${r}&c=${c}`;
+        framecontainer.append(frame);
+
+        status.innerText = `Selected row and col are ${r}, ${c}`;
+      }
+
+      window.onload = () => {
+        let supports = notice.style.scrollStartTargetInline !== undefined;
+        notice.innerText = `This browser does ${supports ? "" : "not"} support scroll-start-target.\n` +
+                           `${supports ? "" : "scrollIntoView proxy active."}`;
+      }
+    </script>
+  </body>
+</html>
